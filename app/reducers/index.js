@@ -1,11 +1,13 @@
 // @flow
 import { combineReducers } from 'redux';
 import { connectRouter } from 'connected-react-router';
-import counter from './counter';
+import loopReducer from './loop';
+import notificationReducer from './notification';
 
 export default function createRootReducer(history: History) {
   return combineReducers({
     router: connectRouter(history),
-    counter
+    loop: loopReducer,
+    notification: notificationReducer
   });
 }

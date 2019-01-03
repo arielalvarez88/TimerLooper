@@ -12,11 +12,13 @@
   "rules": {
     "arrow-parens": ["off"],
     "compat/compat": "error",
+    "import/no-named-as-default-member": "off",
+    "import/no-named-as-default": "off",
     "consistent-return": "off",
     "comma-dangle": "off",
     "flowtype/boolean-style": ["error", "boolean"],
     "flowtype/define-flow-type": "warn",
-    "flowtype/delimiter-dangle": ["error", "never"],
+    "flowtype/delimiter-dangle": "off",
     "flowtype/generic-spacing": ["error", "never"],
     "flowtype/no-primitive-constructor-types": "error",
     "flowtype/no-weak-types": "warn",
@@ -42,6 +44,7 @@
     "promise/always-return": "error",
     "promise/catch-or-return": "error",
     "promise/no-native": "off",
+    "react/destructuring-assignment": "off",
     "react/sort-comp": [
       "error",
       {

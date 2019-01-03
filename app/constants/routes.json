@@ -1,4 +1,6 @@
 {
+  "LOOPER": "/",
   "HOME": "/",
+  "CREATE": "/create",
   "COUNTER": "/counter"
 }

@@ -10,10 +10,13 @@
  *
  * @flow
  */
-import { app, BrowserWindow } from 'electron';
+import { app, BrowserWindow, ipcMain } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
+import IPCMessages from './constants/IPCMessages';
 import MenuBuilder from './menu';
+import type { Loop } from './types/models/Loop';
+import LoopFileIO from './utils/LoopFileIO';
 
 export default class AppUpdater {
   constructor() {
@@ -52,11 +55,7 @@ const installExtensions = async () => {
  */
 
 app.on('window-all-closed', () => {
-  // Respect the OSX convention of having the application in memory even
-  // after all windows have been closed
-  if (process.platform !== 'darwin') {
-    app.quit();
-  }
+  app.quit();
 });
 
 app.on('ready', async () => {
@@ -99,4 +98,25 @@ app.on('ready', async () => {
   // Remove this if your app does not use auto updates
   // eslint-disable-next-line
   new AppUpdater();
+
+  ipcMain.on(IPCMessages.READ_LOOPS, () => {
+    try {
+      LoopFileIO.readLoops();
+      if (mainWindow) {
+        mainWindow.webContents.send(
+          IPCMessages.READ_LOOPS_SUCCESSFULL,
+          LoopFileIO.loops
+        );
+      }
+    } catch (error) {
+      console.error(error);
+      if (mainWindow) {
+        mainWindow.webContents.send(IPCMessages.READ_LOOPS_FAILURE, error);
+      }
+    }
+  });
+
+  ipcMain.on(IPCMessages.CREATE_LOOP, (event: any, loopData: Loop) => {
+    LoopFileIO.saveLoop(loopData);
+  });
 });
